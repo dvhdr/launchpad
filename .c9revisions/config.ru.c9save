@@ -1,0 +1,2 @@
+{"ts":1373529127324,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
+{"contributors":[],"silentsave":false,"ts":1373529338898,"patch":[[{"diffs":[[1,"use Rack::Static, \n  :urls => [\"/images\", \"/js\", \"/css\"],\n  :root => \"public\"\n\nrun lambda { |env|\n  [\n    200, \n    {\n      'Content-Type'  => 'text/html', \n      'Cache-Control' => 'public, max-age=86400' \n    },\n    File.open('public/index.html', File::RDONLY)\n  ]\n}"]],"start1":0,"start2":0,"length1":0,"length2":268}]],"length":268,"saved":false}
