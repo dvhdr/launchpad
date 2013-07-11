@@ -49,28 +49,29 @@
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript" src='js/remix.js'></script>
+<script type="text/javascript" src='./js/remix.js'></script>
 <script type="text/javascript">
 
     // These are the things you need:  an API key, the track ID, and the path to the track
     var apiKey = 'PGCZJJWKLITVGDF9Q';
     var trackID = 'TRCYWPQ139279B3308';
-    var trackURL = 'audio/test.mp3'
+    var trackURL = 'audio/test.mp3';//http://promodj.com/source/3441253/Example_Change_The_Way_You_Kiss_Me_Dj_Electric_Touch_Remix.mp3'
 
     // Set up the key variables
     var remixer;
     var player;
     var track;
-    var remixed;
 
 // The main function.
-function init() {
-
+function init() 
+{
     // Make sure the browser supports Web Audio.
-    if (window.webkitAudioContext === undefined) {
+    if (window.webkitAudioContext === undefined) 
+    {
         myText.textContent = "Web Audio is missing :(";
-    } else {
-        
+    } 
+    else 
+    {    
         myText.textContent = "Web Audio OK...";
     
         // These set up the WebAudio playback environment, and create the remixer and player.
@@ -91,28 +92,13 @@ function init() {
             if (percent == 100) {
                 $("#info").text(percent + "% of the track loaded, remixing...");
             }
-
+                
             // Do the remixing!
-            if (track.status == 'ok' || track.status == 'complete') 
+            if (track.status == 'ok') 
             {
-                // This array holds the chunks of audio that we're going to play back
-                remixed = new Array();
-
-                // This loops over each beat in the track.
-                // If the index of the beat is a multiple of four, we append the beat to the playback array.
-                for (var i=0; i < track.analysis.beats.length; i++) 
-                {
-                    if (i % 4 == 0) 
-                    {
-                        remixed.push(track.analysis.beats[i])
-                    }
-                }
-                $("#info").text("Remix complete! " + track.analysis.beats.length + " beats long");
+                $("#info").text("Remix ready! " + track.analysis.beats.length + " beats long");
             }
-            else
-            {
-                $("#info").text("Track status is not OK :( " + track.status);
-            }
+            
         });
     }
 }
@@ -123,17 +109,21 @@ window.onload = init;
 var myButton = document.getElementById("clickButton");
 var myText = document.getElementById("helloText");
 
+var beat = 0;
+
 myButton.addEventListener('click', doSomething, false)
 
 function doSomething() {
-	myText.textContent = "hello, world!";
+	myText.textContent = "Remix!";
+    
+    
+    var playres = player.play(0, track.analysis.beats[beat++]);
 }
 </script>
 
 <div id='info'> </div>
 
 <!-- These buttons will play and stop your remix.  -->
-<button onClick="player.play(0, remixed);">Play!</button>
 <button onClick="player.stop()">Stop!</button>
 
 </body>

@@ -9,7 +9,7 @@ function createJRemixer(context, jquery, apiKey) {
     var remixer = {
         remixTrackById: function(trackID, trackURL, callback) {
             var track;
-            var url = 'http://developer.echonest.com/api/v4/track/profile?format=json&bucket=audio_summary'
+            var url = 'http://developer.echonest.com/api/v4/track/profile?format=json&bucket=audio_summary';
             $.getJSON(url, {id:trackID, api_key:apiKey}, function(data) {
                 var analysisURL = data.response.track.audio_summary.analysis_url;
                 track = data.response.track;
@@ -19,7 +19,7 @@ function createJRemixer(context, jquery, apiKey) {
                 $.getJSON("http://query.yahooapis.com/v1/public/yql", 
                     { q: "select * from json where url=\"" + analysisURL + "\"", format: "json"}, 
                     function(data) {
-                        if (data.query.results != null) {
+                        if (data.query.results !== null) {
                             track.analysis = data.query.results.json;
                             remixer.remixTrack(track, trackURL, callback);   
                         }
@@ -45,7 +45,7 @@ function createJRemixer(context, jquery, apiKey) {
                     trace('audio loaded');
                      if (false) {
                         track.buffer = context.createBuffer(request.response, false);
-                        track.status = 'ok'
+                        track.status = 'ok';
                     } else {
                         context.decodeAudioData(request.response, 
                             function(buffer) {      // completed function
@@ -54,20 +54,20 @@ function createJRemixer(context, jquery, apiKey) {
                                 callback(track, 100);   
                             }, 
                             function(e) { // error function
-                                track.status = 'error: loading audio'
-                                console.log('audio error', e);
+                                track.status = 'error: loading audio';
+                                console.log('audio error', request.response);
                             }
                         );
                     }
-                }
+                };
                 request.onerror = function(e) {
                     trace('error loading loaded');
-                    track.status = 'error: loading audio'
-                }
+                    track.status = 'error: loading audio';
+                };
                 request.onprogress = function(e) {
                     var percent = Math.round(e.position * 100  / e.totalSize);
                     callback(track, percent);   
-                }
+                };
                 request.send();
             }
 
@@ -79,23 +79,23 @@ function createJRemixer(context, jquery, apiKey) {
                     var type = types[i];
                     trace('preprocessTrack ' + type);
                     for (var j in track.analysis[type]) {
-                        var qlist = track.analysis[type]
+                        var qlist = track.analysis[type];
 
-                        j = parseInt(j)
+                        j = parseInt(j);
 
-                        var q = qlist[j]
+                        var q = qlist[j];
                         q.track = track;
                         q.which = j;
                         if (j > 0) {
                             q.prev = qlist[j-1];
                         } else {
-                            q.prev = null
+                            q.prev = null;
                         }
                         
                         if (j < qlist.length - 1) {
                             q.next = qlist[j+1];
                         } else {
-                            q.next = null
+                            q.next = null;
                         }
                     }
                 }
@@ -117,7 +117,7 @@ function createJRemixer(context, jquery, apiKey) {
             }
 
             function filterSegments(track) {
-                var threshold = .3;
+                var threshold = 0.3;
                 var fsegs = [];
                 fsegs.push(track.analysis.segments[0]);
                 for (var i = 1; i < track.analysis.segments.length; i++) {
@@ -144,7 +144,7 @@ function createJRemixer(context, jquery, apiKey) {
                 var qchildren = track.analysis[child];
 
                 for (var i in qparents) {
-                    var qparent = qparents[i]
+                    var qparent = qparents[i];
                     qparent.children = [];
 
                     for (var j = last; j < qchildren.length; j++) {
@@ -169,14 +169,14 @@ function createJRemixer(context, jquery, apiKey) {
                 var segs = track.analysis.segments;
 
                 for (var i = 0; i < quanta.length; i++) {
-                    var q = quanta[i]
+                    var q = quanta[i];
 
                     for (var j = last; j < segs.length; j++) {
                         var qseg = segs[j];
                         if (qseg.start >= q.start) {
                             q.oseg = qseg;
                             last = j;
-                            break
+                            break;
                         } 
                     }
                 }
@@ -188,7 +188,7 @@ function createJRemixer(context, jquery, apiKey) {
                 var segs = track.analysis.segments;
 
                 for (var i = 0; i < quanta.length; i++) {
-                    var q = quanta[i]
+                    var q = quanta[i];
                     q.overlappingSegments = [];
 
                     for (var j = last; j < segs.length; j++) {
@@ -230,24 +230,25 @@ function createJRemixer(context, jquery, apiKey) {
 
             function queuePlay(when, q) {
                 audioGain.gain.value = 1;
+                var theTime = 0;
                 if (isAudioBuffer(q)) {
                     var audioSource = context.createBufferSource();
                     audioSource.buffer = q;
                     audioSource.connect(audioGain);
                     currentlyQueued.push(audioSource);
                     audioSource.noteOn(when);
-                    if (onPlayCallback != null) {
+                    if (onPlayCallback !== null) {
                         theTime = (when - context.currentTime) *  1000;
                         currentTriggers.push(setTimeout(onPlayCallback, theTime));
                     }
-                    if (afterPlayCallback != null) {
+                    if (afterPlayCallback !== null) {
                         theTime = (when - context.currentTime + parseFloat(q.duration)) *  1000;
                         currentTriggers.push(setTimeout(afterPlayCallback, theTime));
                     }
                     return when + parseFloat(q.duration);
                 } else if ($.isArray(q)) {
                     // Correct for load times
-                    if (when == 0) {
+                    if (when === 0) {
                         when = context.currentTime;
                     }
                     for (var i = 0; i < q.length; i++) {
@@ -255,7 +256,7 @@ function createJRemixer(context, jquery, apiKey) {
                     }
                     return when;
                 } else if (isQuantum(q)) {
-                    var audioSource = context.createBufferSource();
+                    audioSource = context.createBufferSource();
                     audioSource.buffer = q.track.buffer;
                     audioSource.connect(audioGain);
                     q.audioSource = audioSource;
@@ -264,18 +265,18 @@ function createJRemixer(context, jquery, apiKey) {
 
                     // I need to clean up all these ifs
                     if ("syncBuffer" in q) {
-                        var audioSource = context.createBufferSource();
+                        audioSource = context.createBufferSource();
                         audioSource.buffer = q.syncBuffer;
                         audioSource.connect(audioGain);
                         currentlyQueued.push(audioSource);
                         audioSource.noteOn(when);
                     }
 
-                    if (onPlayCallback != null) {
+                    if (onPlayCallback !== null) {
                         theTime = (when - context.currentTime) *  1000;
                         currentTriggers.push(setTimeout(onPlayCallback, theTime));
                     }
-                    if (afterPlayCallback != null) {
+                    if (afterPlayCallback !== null) {
                         theTime = (when - context.currentTime + parseFloat(q.duration)) *  1000;
                         currentTriggers.push(setTimeout(afterPlayCallback, theTime));
                     }
@@ -321,7 +322,7 @@ function createJRemixer(context, jquery, apiKey) {
 
                 stop: function() {
                     for (var i = 0; i < currentlyQueued.length; i++) {
-                        if (currentlyQueued[i] != null) {
+                        if (currentlyQueued[i] !== null) {
                             currentlyQueued[i].noteOff(0);
                         }
                     }
@@ -329,7 +330,7 @@ function createJRemixer(context, jquery, apiKey) {
 
                     if (currentTriggers.length > 0) {
                         for (var i = 0; i < currentTriggers.length; i++) {
-                            clearTimeout(currentTriggers[i])
+                            clearTimeout(currentTriggers[i]);
                         }
                         currentTriggers = new Array();
                     }
@@ -338,7 +339,7 @@ function createJRemixer(context, jquery, apiKey) {
                 curTime: function() {
                     return context.currentTime;
                 },
-            }
+            };
             return player;
         },
 
