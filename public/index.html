@@ -94,7 +94,7 @@ function init() {
             }
 
             // Do the remixing!
-            if (track.status == 'ok') 
+            if (track.status == 'ok' || track.status == 'complete') 
             {
                 // This array holds the chunks of audio that we're going to play back
                 remixed = new Array();
@@ -110,9 +110,11 @@ function init() {
                 }
                 $("#info").text("Remix complete!");
             }
+            else
+            {
+                $("#info").text("Track status is not OK :( " + track.status);
+            }
         });
-        
-        $("#info").text("Ummmm...");
     }
 }
 
