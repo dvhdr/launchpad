@@ -68,8 +68,7 @@ function init() {
 
     // Make sure the browser supports Web Audio.
     if (window.webkitAudioContext === undefined) {
-        error("Sorry, this app needs advanced web audio. Your browser doesn't"
-            + " support it. Try the latest version of Chrome");
+        myText.textContent = "Web Audio is missing :(";
     } else {
         
         myText.textContent = "Web Audio OK...";
@@ -108,7 +107,7 @@ function init() {
                         remixed.push(track.analysis.beats[i])
                     }
                 }
-                $("#info").text("Remix complete!");
+                $("#info").text("Remix complete! " + track.analysis.beats.length + " beats long");
             }
             else
             {
