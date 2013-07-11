@@ -8,7 +8,7 @@
 <style type="text/css">
 #mainContent {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: xx-large;
+	font-size: small;
 	font-weight: bold;
 	background-color: #E3F0FB;
 	border-radius: 4px;
@@ -45,7 +45,6 @@
 <body>
 <div id="mainContent">
 <p id="helloText">?</p>
-<button id="clickButton" class="buttonStyle">click me</button>
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -53,7 +52,7 @@
 <script type="text/javascript">
 
     // These are the things you need:  an API key, the track ID, and the path to the track
-    var apiKey = 'PGCZJJWKLITVGDF9Q';
+    var apiKey = 'SWHCFHJA2PPHKX7A5';//'PGCZJJWKLITVGDF9Q';
     var trackID = 'TRCYWPQ139279B3308';
     var trackURL = 'audio/test.mp3';
     
@@ -72,7 +71,7 @@ function init()
     } 
     else 
     {    
-        myText.textContent = "Web Audio OK...";
+        myText.textContent = "Launchpad Remix Machine";
     
         // These set up the WebAudio playback environment, and create the remixer and player.
         var context = new webkitAudioContext();
@@ -106,24 +105,93 @@ function init()
 // Run the main function once the page is loaded.
 window.onload = init;
 
-var myButton = document.getElementById("clickButton");
 var myText = document.getElementById("helloText");
 
 var beat = 0;
 
-myButton.addEventListener('click', doSomething, false)
-
-function doSomething() {
-	myText.textContent = "Remix!";
-    
-    
-    var playres = player.play(0, track.analysis.beats[beat++]);
+function doSomething(evt) 
+{
+    var yoff = evt.target.yval * 32;
+        
+    if (evt.target.xval < 4)
+    {
+        var xoff = evt.target.xval * 4;
+        
+        var bar = new Array();
+        bar.push(track.analysis.beats[yoff + xoff + 0]);
+        bar.push(track.analysis.beats[yoff + xoff + 1]);
+        bar.push(track.analysis.beats[yoff + xoff + 2]);
+        bar.push(track.analysis.beats[yoff + xoff + 3]);
+        
+        player.stop();
+        var playres = player.play(0, bar);
+    }
+    else
+    {
+        var xoff = (evt.target.xval-4) * 4;
+        
+        var bar = new Array();
+        bar.push(track.analysis.beats[yoff + xoff + 0].tatums[0]);
+        bar.push(track.analysis.beats[yoff + xoff + 0].tatums[0]);
+        bar.push(track.analysis.beats[yoff + xoff + 0].tatums[0]);
+        bar.push(track.analysis.beats[yoff + xoff + 0].tatums[0]);
+        
+        player.stop();
+        var playres = player.play(0, bar);
+    }
 }
+
+function addButton(y, x) 
+{
+    //Create an input type dynamically.   
+    var element = document.createElement("input");
+    //Assign different attributes to the element. 
+    element.type = "button";
+    element.value = x + "," + y; // Really? You want the default value to be the type string?
+    element.name = x + "," + y;  // And the name too?
+    element.xval = x;
+    element.yval = y;
+    
+    element.addEventListener('click', doSomething, false)    
+
+    var foo = document.getElementById("mainContent");
+    //Append the element in page (in span).  
+    foo.appendChild(element);
+}
+
+function addSpacer()
+{
+    var element = document.createElement("p");  
+
+    var foo = document.getElementById("mainContent");
+    foo.appendChild(element);
+}
+
+function addRow(x)
+{
+    for (var i=0; i < 8; ++i)
+    {
+        addButton(x,i);
+    }
+    addSpacer();
+}
+
+addRow(0);
+addRow(1);
+addRow(2);
+addRow(3);
+addRow(4);
+addRow(5);
+addRow(6);
+addRow(7);
+
 </script>
 
 <div id='info'> </div>
+<span id='grid'> </span>
 
 <!-- These buttons will play and stop your remix.  -->
+<button onClick="player.play(0, track.analysis.beats)">Play original</button>
 <button onClick="player.stop()">Stop!</button>
 
 </body>
