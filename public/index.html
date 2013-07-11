@@ -94,7 +94,7 @@ function init()
             // Keep the user update with load times
             $("#info").text(percent + "% of the track loaded");
             if (percent == 100) {
-                $("#info").text(percent + "% of the track loaded, remixing...");
+                $("#info").text(percent + "% of the track loaded, remixing... (" + track.status + ")");
             }
                 
             // Do the remixing!
@@ -102,6 +102,7 @@ function init()
             {
                 $("#info").text("Remix ready! " + track.analysis.beats.length + " beats, "  + track.analysis.tatums.length + " tatums");
             }
+            
         });
     }
 }

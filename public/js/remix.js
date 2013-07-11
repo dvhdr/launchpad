@@ -55,7 +55,8 @@ function createJRemixer(context, jquery, apiKey) {
                             }, 
                             function(e) { // error function
                                 track.status = 'error: loading audio';
-                                console.log('audio error', request.response);
+                                console.log('audio error', e);
+                                callback(track, 100);
                             }
                         );
                     }
