@@ -114,6 +114,15 @@ function flipHandler(e)
 
 var lastElem = null;
 
+function setElemOnLaunchpad(elem)
+{
+    if (midiOut)
+    {
+        var key = elem.row*16 + elem.col;
+        midiOut.send( [0x90, key, elem.classList.contains("live") ? 0x30 : (elem.classList.contains("mature")?0x13 : 0x00)]);
+    } 
+}
+
 function hit(elem) 
 {
     elem.className = "cell live";
@@ -121,21 +130,12 @@ function hit(elem)
     if (lastElem && lastElem != elem)
     {
         lastElem.className = "cell mature";
-        if (midiOut)
-        {
-            var key = lastElem.row*16 + lastElem.col;
-            midiOut.send( [0x90, key, lastElem.classList.contains("live") ? (lastElem.classList.contains("mature")?0x13:0x30) : 0x00]);
-        }
+        setElemOnLaunchpad(lastElem);
     }
     lastElem = elem;
     
     playClip(elem.col, elem.row);
-    
-    if (midiOut)
-    {
-        var key = elem.row*16 + elem.col;
-    	midiOut.send( [0x90, key, elem.classList.contains("live") ? (elem.classList.contains("mature")?0x13:0x30) : 0x00]);
-    }
+    setElemOnLaunchpad(elem);
 }
 
 function findElemByXY( x, y ) {
