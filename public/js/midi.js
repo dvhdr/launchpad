@@ -7,9 +7,6 @@ var frame1 = null,
 var numRows = 8,
 	numCols = 8;
 
-window.addEventListener('keydown', function() { tick();
-} );
-
 window.addEventListener('load', function() {
 	theUniverse = document.getElementById("universe");
 	frame1 = new Array(numRows);
