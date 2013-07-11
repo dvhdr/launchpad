@@ -54,7 +54,7 @@
 
     // These are the things you need:  an API key, the track ID, and the path to the track
     var apiKey = 'PGCZJJWKLITVGDF9Q';
-    var trackID = 'Track';
+    var trackID = 'TRCYWPQ139279B3308';
     var trackURL = 'audio/test.mp3'
 
     // Set up the key variables
@@ -111,6 +111,8 @@ function init() {
                 $("#info").text("Remix complete!");
             }
         });
+        
+        $("#info").text("Ummmm...");
     }
 }
 
@@ -128,6 +130,10 @@ function doSomething() {
 </script>
 
 <div id='info'> </div>
+
+<!-- These buttons will play and stop your remix.  -->
+<button onClick="player.play(0, remixed);">Play!</button>
+<button onClick="player.stop()">Stop!</button>
 
 </body>
 </html>
