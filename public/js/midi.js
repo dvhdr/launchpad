@@ -43,7 +43,7 @@ window.addEventListener('load', function() {
 	}
 	currentFrame = frame1;
 	backFrame = frame2;
-	//navigator.requestMIDIAccess().then( onMIDIInit );
+	navigator.requestMIDIAccess().then( onMIDIInit );
 } );
 
 var selectMIDIIn = null;
