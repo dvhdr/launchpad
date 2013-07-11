@@ -45,6 +45,9 @@ function init()
         var context = new webkitAudioContext();
         remixer = createJRemixer(context, $, apiKey);
         player = remixer.getPlayer();
+        
+         player.addAfterPlayCallback(playLoop);
+    
         $("#info").text("Loading analysis data...");
 
         // The key line.  This prepares the track for remixing:  it gets
@@ -73,6 +76,39 @@ function init()
 // Run the main function once the page is loaded.
 window.onload = init;
 
+var nextLoopStart = 0;
+var lastLoop = -1;
+var beat = 3;
+
+function playLoop()
+{
+    if (lastLoop < 0)
+    {
+        return;
+    }
+    
+    console.log("loop: " + lastLoop + " beat: " + beat);
+    
+    // prevent queueing for each beat, as the callback comes on teh beat, not the bar
+    if (++beat > 3)
+    {
+        beat = 0;
+    }
+    else
+    {
+        return;
+    }
+    
+    var bar = new Array();
+    bar.push(track.analysis.beats[lastLoop + 0]);
+    bar.push(track.analysis.beats[lastLoop + 1]);
+    bar.push(track.analysis.beats[lastLoop + 2]);
+    bar.push(track.analysis.beats[lastLoop + 3]);
+    
+    
+    nextLoopStart = player.play(nextLoopStart, bar);
+}
+
 function playClip(x, y) 
 {
     var yoff = y * 32;
@@ -81,17 +117,16 @@ function playClip(x, y)
     {
         var xoff = x * 4;
         
-        var bar = new Array();
-        
-        for (var i=0; i < 8; ++i)
+        var start = false;
+        if (lastLoop < 0)
         {
-            bar.push(track.analysis.beats[yoff + xoff + 0]);
-            bar.push(track.analysis.beats[yoff + xoff + 1]);
-            bar.push(track.analysis.beats[yoff + xoff + 2]);
-            bar.push(track.analysis.beats[yoff + xoff + 3]);
+            player.stop();
+            start = true;
         }
-        player.stop();
-        var playres = player.play(0, bar);
+        lastLoop = yoff + xoff;    
+        
+        if (start)
+            playLoop();
     }
     else
     {
@@ -103,8 +138,11 @@ function playClip(x, y)
             bar.push(track.analysis.tatums[yoff + xoff]);
         }
         
+        nextLoopStart = 0;
         player.stop();
-        var playres = player.play(0, bar);
+        lastLoop = -1;
+        beat = 3;
+        player.play(0, bar);
     }
 }
 

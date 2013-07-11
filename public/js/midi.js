@@ -1,31 +1,19 @@
 var theUniverse = null;
-var frame1 = null,
-    frame2 = null,
-	currentFrame = null,
-	backFrame = null;
 
 var numRows = 8,
 	numCols = 8;
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function() 
+{
 	theUniverse = document.getElementById("universe");
-	frame1 = new Array(numRows);
-	frame2 = new Array(numRows);
 
-	for (var i=0; i<numRows; i++) {
-		frame1[i] = new Array(numCols);
-		frame2[i] = new Array(numCols);
-		for (var j=0; j<numCols; j++) {
-			frame1[i][j] = (Math.random() < 0.5);
-			frame2[i][j] = false;
-		}	
-	}
-
-	for (var i=0; i<numRows; i++) {
+	for (var i=0; i<numRows; i++) 
+    {
 		var rowElem = document.createElement("div");
 		rowElem.className = "row";
 		rowElem.row = i;
-		for (var j=0; j<numCols; j++) {
+		for (var j=0; j<numCols; j++) 
+        {
 			var cellElem = document.createElement("div");
 			cellElem.row = i;
 			cellElem.col = j;
@@ -34,15 +22,11 @@ window.addEventListener('load', function() {
             
             cellElem.xval = j;
             cellElem.yval = i;
-    
-			if (frame1[i][j])
-				cellElem.classList.add("live");
+
 			rowElem.appendChild(cellElem);
 		}
 		theUniverse.appendChild(rowElem);
 	}
-	currentFrame = frame1;
-	backFrame = frame2;
 	navigator.requestMIDIAccess().then( onMIDIInit );
 } );
 
@@ -126,21 +110,39 @@ function onMIDIInit( midi ) {
   }
 }
 
-function flipHandler(e) {
-	flip( e.target );
+function drawFullBoardToMIDI() {
+    for (var i=0; i<numRows; i++) {
+		for (var j=0; j<numCols; j++) {
+			var key = i*16 + j;
+			midiOut.send( [0x90, key, findElemByXY(j,i).classList.contains("mature")?0x13:0x30]);
+		}	
+	}
 }
 
-function flip(elem) {
-	currentFrame[elem.row][elem.col] = !currentFrame[elem.row][elem.col];
-	if (elem.className == "cell")  // dead
-		elem.className = "cell live";
-	else
-		elem.className = "cell";
-	var key = elem.row*16 + elem.col;
+function flipHandler(e) 
+{
+	hit( e.target );
+}
+
+var lastElem = null;
+
+function hit(elem) 
+{
+    elem.className = "cell live";
+    
+    if (lastElem && lastElem != elem)
+    {
+        lastElem.className = "cell mature";
+    }
+    lastElem = elem;
     
     playClip(elem.xval, elem.yval);
     
-	midiOut.send( [0x90, key, elem.classList.contains("live") ? (elem.classList.contains("mature")?0x13:0x30) : 0x00]);
+    if (midiOut)
+    {
+        var key = elem.row*16 + elem.col;
+    	midiOut.send( [0x90, key, elem.classList.contains("live") ? (elem.classList.contains("mature")?0x13:0x30) : 0x00]);
+    }
 }
 
 function findElemByXY( x, y ) {
@@ -158,19 +160,10 @@ function findElemByXY( x, y ) {
 	return null;
 }
 
-function flipXY( x, y ) {
+function hitXY( x, y ) {
 	var elem = findElemByXY( x, y );
 	if (elem)
-		flip( elem );
-}
-
-function drawFullBoardToMIDI() {
-	for (var i=0; i<numRows; i++) {
-		for (var j=0; j<numCols; j++) {
-			var key = i*16 + j;
-			midiOut.send( [0x90, key, currentFrame[i][j] ? (findElemByXY(j,i).classList.contains("mature")?0x13:0x30) : 0x00]);
-		}	
-	}
+		hit( elem );
 }
 
 function midiProc(event) {
@@ -189,7 +182,7 @@ function midiProc(event) {
     else {
       var x = noteNumber & 0x0f;
       var y = (noteNumber & 0xf0) >> 4;
-      flipXY( x, y );
+      hitXY( x, y );
     }
   } else if (cmd == 11) { // Continuous Controller message
     switch (b) {
