@@ -19,9 +19,6 @@ window.addEventListener('load', function()
 			cellElem.col = j;
 			cellElem.onclick = flipHandler;
 			cellElem.className = "cell";
-            
-            cellElem.xval = j;
-            cellElem.yval = i;
 
 			rowElem.appendChild(cellElem);
 		}
@@ -106,18 +103,9 @@ function onMIDIInit( midi ) {
   if (midiOut && launchpadFound) {  
 	midiOut.send( [0xB0,0x00,0x00] ); // Reset Launchpad
 	midiOut.send( [0xB0,0x00,0x01] ); // Select XY mode
-	drawFullBoardToMIDI();
   }
 }
 
-function drawFullBoardToMIDI() {
-    for (var i=0; i<numRows; i++) {
-		for (var j=0; j<numCols; j++) {
-			var key = i*16 + j;
-			midiOut.send( [0x90, key, findElemByXY(j,i).classList.contains("mature")?0x13:0x30]);
-		}	
-	}
-}
 
 function flipHandler(e) 
 {
@@ -133,10 +121,15 @@ function hit(elem)
     if (lastElem && lastElem != elem)
     {
         lastElem.className = "cell mature";
+        if (midiOut)
+        {
+            var key = lastElem.row*16 + lastElem.col;
+            midiOut.send( [0x90, key, lastElem.classList.contains("live") ? (lastElem.classList.contains("mature")?0x13:0x30) : 0x00]);
+        }
     }
     lastElem = elem;
     
-    playClip(elem.xval, elem.yval);
+    playClip(elem.col, elem.row);
     
     if (midiOut)
     {
