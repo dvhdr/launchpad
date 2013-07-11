@@ -51,9 +51,6 @@
 </head>
 
 <body>
-<div id="mainContent">
-<p id="helloText">?</p>
-</div>
 
 <script type="text/javascript">
 
@@ -70,6 +67,8 @@
 // The main function.
 function init() 
 {
+    var myText = document.getElementById("helloText");
+
     // Make sure the browser supports Web Audio.
     if (window.webkitAudioContext === undefined) 
     {
@@ -103,15 +102,12 @@ function init()
             {
                 $("#info").text("Remix ready! " + track.analysis.beats.length + " beats, "  + track.analysis.tatums.length + " tatums");
             }
-            
         });
     }
 }
 
 // Run the main function once the page is loaded.
 window.onload = init;
-
-var myText = document.getElementById("helloText");
 
 function playClip(x, y) 
 {
@@ -150,6 +146,10 @@ function playClip(x, y)
 }
 
 </script>
+
+<div id="mainContent">
+<p id="helloText">?</p>
+</div>
 
 <div id='info'> </div>
 
