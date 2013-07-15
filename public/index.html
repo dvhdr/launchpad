@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="css/main.css" type="text/css">
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src='http://cwilso.github.com/WebMIDIAPIShim/WebMIDIAPI.js'></script>
+<script src='//cwilso.github.com/WebMIDIAPIShim/WebMIDIAPI.js'></script>
 <script src="js/midi.js"></script>
 <script src='js/remix.js'></script>
 <script src='js/audio.js'></script>
@@ -17,26 +17,7 @@
 <body>
 
 
-<script type="text/javascript">
 
-
-
-function fetchSig() {
-    var url = 'http://labs.echonest.com/Uploader/policy?callback=?'
-    $.getJSON(url, {}, function(data) {
-        console.log("hosdhsojh");
-        console.log(url);
-        //policy = data.policy;
-        //signature = data.signature;
-        $('#f-policy').val(data.policy);
-        $('#f-signature').val(data.signature);
-        $('#f-key').val(data.key);
-    });
-}
-
-window.onload = fetchSig;
-
-</script>
 
 <div id="mainContent">
 <p>Launchpad Remix Machine</p>

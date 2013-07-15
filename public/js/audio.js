@@ -12,7 +12,7 @@ var track;
 
 // Get an estimation of analysis time
 function fetchQinfo() {
-    var url = 'http://remix.echonest.com/Uploader/qinfo?callback=?'
+    var url = '//remix.echonest.com/Uploader/qinfo?callback=?'
     $.getJSON(url, {}, function(data) {
         $("#info").text("Estimated analysis time: " + Math.floor(data.estimated_wait * 1.2) + " seconds.");
     });

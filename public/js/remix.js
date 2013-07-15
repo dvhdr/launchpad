@@ -533,7 +533,7 @@ function fixFileName(name) {
 }
 
 function fetchSignature() {
-    var url = 'http://remix.echonest.com/Uploader/verify?callback=?&v=audio'
+    var url = '//remix.echonest.com/Uploader/verify?callback=?&v=audio'
     $.getJSON(url, {}, function(data) {
         policy = data.policy;
         signature = data.signature;
@@ -542,7 +542,7 @@ function fetchSignature() {
         $('#f-key').val(data.key);
     });
     
-    console.log("fetched sig");
+    console.log("fetched si")
 }
 
 function getProfile(trackID, callback) {
