@@ -541,6 +541,8 @@ function fetchSignature() {
         $('#f-signature').val(data.signature);
         $('#f-key').val(data.key);
     });
+    
+    console.log("fetched sig");
 }
 
 function getProfile(trackID, callback) {

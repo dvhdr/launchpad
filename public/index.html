@@ -16,31 +16,49 @@
 
 <body>
 
+
+<script type="text/javascript">
+
+
+
+function fetchSig() {
+    var url = 'http://labs.echonest.com/Uploader/policy?callback=?'
+    $.getJSON(url, {}, function(data) {
+        console.log("hosdhsojh");
+        console.log(url);
+        //policy = data.policy;
+        //signature = data.signature;
+        $('#f-policy').val(data.policy);
+        $('#f-signature').val(data.signature);
+        $('#f-key').val(data.key);
+    });
+}
+
+window.onload = fetchSig;
+
+</script>
+
 <div id="mainContent">
 <p>Launchpad Remix Machine</p>
 <p id='info'> </p>
 
 <button onClick="playOriginal();">Play original</button>
-<button onClick="player.stop()">Stop!</button>
+<button onClick="stopLooping();">Stop!</button>
 
 </div>
 
 
-        <div id='select-track'  style="display: none;>
+        <div id='select-track'>
             <form action="https://s3.amazonaws.com/static.echonest.com" method="post" enctype="multipart/form-data">
               <input id='f-filename' type="hidden" name="key" value="remix_audio/${filename}">
-            <!--  <input id='f-key' type="hidden" name="AWSAccessKeyId" value="YOUR_AWS_ACCESS_KEY"> --> 
-           <input id="f-key" type="hidden" name="AWSAccessKeyId" value="AKIAJRDFEY23UEVW42BQ">
+            <input id='f-key' type="hidden" name="AWSAccessKeyId" value="YOUR_AWS_ACCESS_KEY">
            
            <input type="hidden" name="acl" value="public-read"> 
-            <!--  <input id='redirect-url' type="hidden" name="success_action_redirect"
-                  value="YOUR_URL"> -->
+           
             <input id='redirect-url' type="hidden" name="success_action_redirect"
-                  value="http://echonest.github.io/remix/js/examples/sandbox.html">
-            <!--  <input id='f-policy' type="hidden" name="policy" value="YOUR_POLICY_DOCUMENT_BASE64_ENCODED"> -->
-            <input id="f-policy" type="hidden" name="policy" value="eyJjb25kaXRpb25zIjogW3siYnVja2V0IjogInN0YXRpYy5lY2hvbmVzdC5jb20ifSwgWyJzdGFydHMtd2l0aCIsICIka2V5IiwgInJlbWl4X2F1ZGlvLyJdLCB7ImFjbCI6ICJwdWJsaWMtcmVhZCJ9LCBbInN0YXJ0cy13aXRoIiwgIiRzdWNjZXNzX2FjdGlvbl9yZWRpcmVjdCIsICJodHRwOi8vIl0sIFsic3RhcnRzLXdpdGgiLCAiJENvbnRlbnQtVHlwZSIsICJhdWRpby9tcGVnIl0sIFsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA0MDAwMDAwMF1dLCAiZXhwaXJhdGlvbiI6ICIyMDEzLTA3LTE2VDA2OjEwOjAyLjQ4MzI3NVoifQ==">
-            <!-- <input id='f-signature' type="hidden" name="signature" value="YOUR_CALCULATED_SIGNATURE"> -->
-            <input id="f-signature" type="hidden" name="signature" value="y1mTb1xiS1MM6e0zo41zuZWkupw=">
+                  value="https://c9.io/davehodder/launchpad/workspace/public/index.html">
+             <input id='f-policy' type="hidden" name="policy" value="YOUR_POLICY_DOCUMENT_BASE64_ENCODED">
+             <input id='f-signature' type="hidden" name="signature" value="YOUR_CALCULATED_SIGNATURE">
               <input type="hidden" name="Content-Type" value="audio/mpeg">
               Select an <b>MP3</b> to upload : <input  id="file" name="file" type="file"> 
               <br>

@@ -1,8 +1,8 @@
 
 // These are the things you need:  an API key, the track ID, and the path to the track
 var apiKey = 'PGCZJJWKLITVGDF9Q';
-var trackID = 'TRCYWPQ139279B3308';
-var trackURL = 'audio/test.mp3';
+var trackID;// = 'TRCYWPQ139279B3308';
+var trackURL;// = 'audio/test.mp3';
 
 // Set up the key variables
 var remixer;
@@ -31,7 +31,7 @@ function analyzeAudio(audio, tag, callback) {
     });
 }
 
-function initUpload() {
+function init() {
     if (window.webkitAudioContext === undefined) {
         error("Sorry, this app needs advanced web audio. Your browser doesn't"
             + " support it. Try the latest version of Chrome");
@@ -133,6 +133,7 @@ function initUpload() {
                 }
             }
         );
+        
         fetchSignature();
         fetchQinfo();
     }
@@ -190,7 +191,7 @@ function initSimple()
 }
 
 // Run the main function once the page is loaded.
-window.onload = initSimple;
+window.onload = init;
 
 //////////////////////////////////////////////////////////////
 // looping "engine"
