@@ -139,6 +139,9 @@ function init() {
     }
 }
 
+var colOffset = 4; // skip bars to fit more content in for long songs
+
+
 function loadRemixData()
 {
          player.addAfterPlayCallback(playLoop);
@@ -166,6 +169,11 @@ function loadRemixData()
             if (track.status == 'ok') 
             {
                 $("#info").text("Remix ready! " + track.analysis.beats.length + " beats, "  + track.analysis.tatums.length + " tatums");
+            }
+            
+            if (track.analysis.bars > 64)
+            {
+                colOffset = 8;
             }
             
         });
@@ -239,9 +247,9 @@ function stopLooping()
 
 function playClip(x, y) 
 {
-    var yoff = y * 64;
+    var yoff = y * colOffset * 8;
 
-    var xoff = x * 8;
+    var xoff = x * colOffset;
     
     var nextLoop = xoff + yoff;
     
