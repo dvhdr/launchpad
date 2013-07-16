@@ -16,11 +16,8 @@
 
 <body>
 
-
-
-
 <div id="mainContent">
-<p>Launchpad Remix Machine</p>
+<p id="message">Connect a Launchpad!</p>
 <p id='info'> </p>
 
 <button onClick="playOriginal();">Play original</button>
@@ -29,38 +26,27 @@
 </div>
 
 
-        <div id='select-track'>
-            <form action="https://s3.amazonaws.com/static.echonest.com" method="post" enctype="multipart/form-data">
-              <input id='f-filename' type="hidden" name="key" value="remix_audio/${filename}">
-            <input id='f-key' type="hidden" name="AWSAccessKeyId" value="YOUR_AWS_ACCESS_KEY">
-           
-           <input type="hidden" name="acl" value="public-read"> 
-           
-            <input id='redirect-url' type="hidden" name="success_action_redirect"
-                  value="https://c9.io/davehodder/launchpad/workspace/public/index.html">
-             <input id='f-policy' type="hidden" name="policy" value="YOUR_POLICY_DOCUMENT_BASE64_ENCODED">
-             <input id='f-signature' type="hidden" name="signature" value="YOUR_CALCULATED_SIGNATURE">
-              <input type="hidden" name="Content-Type" value="audio/mpeg">
-              Select an <b>MP3</b> to upload : <input  id="file" name="file" type="file"> 
-              <br>
-              <input class="btn btn-primary btn-default" id='upload' type="submit" value="Upload MP3"> 
-            </form> 
-        </div>
+<div id='select-track'>
+    <form action="https://s3.amazonaws.com/static.echonest.com" method="post" enctype="multipart/form-data">
+    <input id='f-filename' type="hidden" name="key" value="remix_audio/${filename}">
+    <input id='f-key' type="hidden" name="AWSAccessKeyId" value="YOUR_AWS_ACCESS_KEY">
+   
+    <input type="hidden" name="acl" value="public-read"> 
+   
+    <input id='redirect-url' type="hidden" name="success_action_redirect"
+          value="https://c9.io/davehodder/launchpad/workspace/public/index.html">
+    <input id='f-policy' type="hidden" name="policy" value="YOUR_POLICY_DOCUMENT_BASE64_ENCODED">
+    <input id='f-signature' type="hidden" name="signature" value="YOUR_CALCULATED_SIGNATURE">
+    <input type="hidden" name="Content-Type" value="audio/mpeg">
+      Select an <b>MP3</b> to upload : <input  id="file" name="file" type="file"> 
+    <br>
+    <input class="btn btn-primary btn-default" id='upload' type="submit" value="Upload MP3"> 
+    </form> 
+</div>
 
 <p></p>
 
 <div id="universe"/></div>
-
-<p>
-	MIDI In:
-	<select id=midiIn onchange='changeMidiIn();'>
-		<option value="">Not connected</option>
-	</select>
-	MIDI Out:
-	<select id=midiOut onchange='changeMidiOut();'>
-		<option value="">Not connected</option>
-	</select>
-</p>
 
 </body>
 </html>
