@@ -199,8 +199,6 @@ function playLoop()
         return;
     }
     
-    console.log("loop: " + lastLoop + " beat: " + beat);
-    
     // prevent queueing for each beat, as the callback comes on teh beat, not the bar
     if (++beat > 3)
     {
