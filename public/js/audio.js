@@ -203,7 +203,7 @@ function playLoop()
     bar.push(track.analysis.beats[lastLoop + 2]);
     bar.push(track.analysis.beats[lastLoop + 3]);
 
-    nextLoopStart = player.play(nextLoopStart, track.analysis.bars[lastloop]);
+    nextLoopStart = player.play(nextLoopStart, track.analysis.bars[lastLoop]);
 }
 
 function stopLooping()
