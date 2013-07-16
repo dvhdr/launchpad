@@ -62,8 +62,6 @@ function onMIDIInit( midi )
   
   if (midiOut && launchpadFound) 
   {       
-    $("#message").text("Launchpad connected");
-      
 	midiOut.send( [0xB0,0x00,0x00] ); // Reset Launchpad
 	midiOut.send( [0xB0,0x00,0x01] ); // Select XY mode
   }
@@ -81,17 +79,17 @@ function setElemOnLaunchpad(elem)
     if (midiOut)
     {
         var key = elem.row*16 + elem.col;
-        midiOut.send( [0x90, key, elem.classList.contains("live") ? 0x30 : (elem.classList.contains("mature")?0x11 : 0x00)]);
+        midiOut.send( [0x90, key, elem.classList.contains("playing") ? 0x30 : (elem.classList.contains("old")?0x22 : 0x00)]);
     } 
 }
 
 function hit(elem) 
 {
-    elem.className = "cell live";
+    elem.className = "cell playing";
     
     if (lastElem && lastElem != elem)
     {
-        lastElem.className = "cell mature";
+        lastElem.className = "cell old";
         setElemOnLaunchpad(lastElem);
     }
     lastElem = elem;
