@@ -139,9 +139,6 @@ function init() {
     }
 }
 
-var colOffset = 4; // default is not to skip bars to fit more content in for long songs
-
-
 function loadRemixData()
 {
     player.addAfterPlayCallback(playLoop);
@@ -168,15 +165,7 @@ function loadRemixData()
         // Do the remixing!
         if (track.status == 'ok') 
         {
-            $("#info").text(track.analysis.sections.length + " sections, "  
-                          + track.analysis.bars.length + " bars, "  
-                          + track.analysis.beats.length + " beats, "  
-                          + track.analysis.tatums.length + " tatums");
-       
-            if (track.analysis.bars > 64)
-            {
-                colOffset = 8;
-            }
+            $("#info").text("Ready.");
         }
     });
 }
@@ -186,7 +175,7 @@ window.onload = init;
 
 //////////////////////////////////////////////////////////////
 // looping "engine"
-
+var colOffset = 1; // default is not to skip bars to fit more content in for long songs
 var nextLoopStart = 0;
 var lastLoop = -1;
 var beat = 3;
@@ -205,7 +194,7 @@ function playLoop()
     }
     else
     {
-        return;
+  //      return;
     }
     
     var bar = new Array();
@@ -213,9 +202,8 @@ function playLoop()
     bar.push(track.analysis.beats[lastLoop + 1]);
     bar.push(track.analysis.beats[lastLoop + 2]);
     bar.push(track.analysis.beats[lastLoop + 3]);
-    
-    
-    nextLoopStart = player.play(nextLoopStart, bar);
+
+    nextLoopStart = player.play(nextLoopStart, track.analysis.bars[lastloop]);
 }
 
 function stopLooping()
