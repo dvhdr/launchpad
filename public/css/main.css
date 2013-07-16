@@ -10,59 +10,34 @@
 .cell.live { background: lime; }
 .cell.mature { background: orange;}
 
-body { background: black; color: white;}
-.cueButton {
-	-webkit-box-shadow: white 0px 1px 1px 0px inset, rgba(0, 0, 0, 0.597656) 0px 3px 3px 0px;
-	background-color: #B6D3F4;
-	background-image: -webkit-linear-gradient(top, #B6D3F4, #5483B8);
-	border: 1px solid #9AC9FF;
-	border-radius: 18px;
-	box-shadow: white 0px 1px 1px 0px inset, rgba(0, 0, 0, 0.597656) 0px 3px 3px 0px;
-	color: #555;
-	display: block;
-	font: 15px "Chango", 'Lucida Grande', sans-serif;
-	padding: 1px 7px 0px 7px;
-	position: absolute;
-	text-shadow: rgba(0, 0, 0, 0.296875) 0px -1px 0px;
-	bottom: 5px;
-	left: 5px;
-}
-.cueButton.active {
-	background-color: red;
-	background-image: -webkit-linear-gradient(top, red, pink);
-	border: 1px solid #FFC99A;
-}
-.cueButton:hover {
-	-webkit-box-shadow:inset 0 2px 6px #fff,0 3px 3px rgba(0,0,0,0.6);
-	-moz-box-shadow:inset 0 2px 6px #fff,0 3px 3px rgba(0,0,0,0.6);
-	box-shadow:inset 0 2px 6px #fff,0 3px 3px rgba(0,0,0,0.6)
-}
+body { 
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: small;
+    background: black; 
+    color: white;
+    }
+ 
 
-input[type="range"] {
-    -webkit-appearance: none;
-    background-color: gray;
-    height: 12px;
-}
- 
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    position: relative;
-    z-index: 1;
-    width: 10px;
-    height: 20px;
- 
-    -webkit-border-radius: 40px;
-    -moz-border-radius: 40px;
-    border-radius: 40px;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ebf1f6), color-stop(50%,#abd3ee), color-stop(51%,#89c3eb), color-stop(100%,#d5ebfb));
+#title {
+    font-size: 48pt;
+    font-weight: bold;
+	text-align: left;
+    padding: 0px;
 }
 
 #mainContent {
-    font-family: Arial, Helvetica, sans-serif;
-	font-size: small;
 	font-weight: bold;
 	background-color: #444;
 	border-radius: 4px;
-	padding: 10px;
-	text-align: center;
+    padding: 10px;
+	text-align: left;
+    width: 356px; 
+}
+
+#universe {
+    border: 0px solid lime; border-radius: 5px;
+    width: 356px; height: 348px;
+    background: black; 
+    color: white;
 }

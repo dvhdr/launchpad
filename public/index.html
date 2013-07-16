@@ -16,14 +16,13 @@
 
 <body>
 
+
 <div id="mainContent">
+<div id="title"><img src="images/logo.png" width="60" height="60" style="float:left;margin-right:10px;"/>
+<p style="margin-top:0;margin-bottom:0;">Demix</p></div>
+
 <p id="message">Connect a Launchpad!</p>
 <p id='info'> </p>
-
-<button onClick="playOriginal();">Play original</button>
-<button onClick="stopLooping();">Stop!</button>
-
-</div>
 
 
 <div id='select-track'>
@@ -34,19 +33,29 @@
     <input type="hidden" name="acl" value="public-read"> 
    
     <input id='redirect-url' type="hidden" name="success_action_redirect"
-          value="https://c9.io/davehodder/launchpad/workspace/public/index.html">
+          value="YOUR_REDIRCT_URL">
     <input id='f-policy' type="hidden" name="policy" value="YOUR_POLICY_DOCUMENT_BASE64_ENCODED">
     <input id='f-signature' type="hidden" name="signature" value="YOUR_CALCULATED_SIGNATURE">
     <input type="hidden" name="Content-Type" value="audio/mpeg">
       Select an <b>MP3</b> to upload : <input  id="file" name="file" type="file"> 
-    <br>
-    <input class="btn btn-primary btn-default" id='upload' type="submit" value="Upload MP3"> 
+    <br><input class="btn btn-primary btn-default" id='upload' type="submit" value="Upload"> 
     </form> 
 </div>
 
+
 <p></p>
 
-<div id="universe"/></div>
+<div id="universe"></div>
+
+
+</div>
+</div>
+
+<div>
+<p></p>
+<button onClick="playOriginal();">Play original</button>
+<button onClick="stopLooping();">Stop!</button>
+</div>
 
 </body>
 </html>

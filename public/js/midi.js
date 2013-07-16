@@ -81,7 +81,7 @@ function setElemOnLaunchpad(elem)
     if (midiOut)
     {
         var key = elem.row*16 + elem.col;
-        midiOut.send( [0x90, key, elem.classList.contains("live") ? 0x30 : (elem.classList.contains("mature")?0x13 : 0x00)]);
+        midiOut.send( [0x90, key, elem.classList.contains("live") ? 0x30 : (elem.classList.contains("mature")?0x11 : 0x00)]);
     } 
 }
 
