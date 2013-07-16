@@ -1,8 +1,8 @@
 
 // These are the things you need:  an API key, the track ID, and the path to the track
 var apiKey = 'PGCZJJWKLITVGDF9Q';
-var trackID;// = 'TRCYWPQ139279B3308';
-var trackURL;// = 'audio/test.mp3';
+var trackID;
+var trackURL;
 
 // Set up the key variables
 var remixer;
@@ -139,63 +139,44 @@ function init() {
     }
 }
 
-var colOffset = 4; // skip bars to fit more content in for long songs
+var colOffset = 4; // default is not to skip bars to fit more content in for long songs
 
 
 function loadRemixData()
 {
-         player.addAfterPlayCallback(playLoop);
-    
-        $("#info").text("Loading analysis data...");
+    player.addAfterPlayCallback(playLoop);
 
-        // The key line.  This prepares the track for remixing:  it gets
-        // data from the Echo Nest analyze API and connects it with the audio file.
-        // All the remixing takes place in the callback function.
-        remixer.remixTrackById(trackID, trackURL, function(t, percent)
-        {
-            track = t;
+    $("#info").text("Loading analysis data...");
 
-            // Keep the user update with load times
-            $("#info").text(percent + "% of the track loaded");
-            if (percent == 100) {
-                $("#info").text(percent + "% of the track loaded, remixing...");
-                if (track.status != 'complete')
-                {
-                    $("#info").text("Something went wrong - status:" + track.status);
-                }
-            }
-                
-            // Do the remixing!
-            if (track.status == 'ok') 
+    // The key line.  This prepares the track for remixing:  it gets
+    // data from the Echo Nest analyze API and connects it with the audio file.
+    // All the remixing takes place in the callback function.
+    remixer.remixTrackById(trackID, trackURL, function(t, percent)
+    {
+        track = t;
+
+        // Keep the user update with load times
+        $("#info").text(percent + "% of the track loaded");
+        if (percent == 100) {
+            $("#info").text(percent + "% of the track loaded, remixing...");
+            if (track.status != 'complete')
             {
-                $("#info").text("Remix ready! " + track.analysis.beats.length + " beats, "  + track.analysis.tatums.length + " tatums");
+                $("#info").text("Something went wrong - status:" + track.status);
             }
+        }
             
+        // Do the remixing!
+        if (track.status == 'ok') 
+        {
+            $("#info").text("Remix ready! " + track.analysis.bars.length + " bars, "  + track.analysis.beats.length + " beats, "  + track.analysis.tatums.length + " tatums");
+       
+       
             if (track.analysis.bars > 64)
             {
                 colOffset = 8;
             }
-            
-        });
-}
-
-// The main function.
-function initSimple() 
-{
-    // Make sure the browser supports Web Audio.
-    if (window.webkitAudioContext === undefined) 
-    {
-        $("#info").text("Web Audio is missing :(");
-    } 
-    else 
-    {    
-        // These set up the WebAudio playback environment, and create the remixer and player.
-        var context = new webkitAudioContext();
-        remixer = createJRemixer(context, $, apiKey);
-        player = remixer.getPlayer();
-        
-        loadRemixData();
-    }
+        }
+    });
 }
 
 // Run the main function once the page is loaded.
