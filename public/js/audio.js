@@ -158,7 +158,7 @@ function loadRemixData()
         // Keep the user update with load times
         $("#info").text(percent + "% of the track loaded");
         if (percent == 100) {
-            $("#info").text(percent + "% of the track loaded, remixing...");
+            $("#info").text(percent + "% of the track loaded, building...");
             if (track.status != 'complete')
             {
                 $("#info").text("Something went wrong - status:" + track.status);
@@ -168,11 +168,10 @@ function loadRemixData()
         // Do the remixing!
         if (track.status == 'ok') 
         {
-            $("#info").text("Ready! "   + track.analysis.sections.length + " sections, "  
-                                        + track.analysis.bars.length + " bars, "  
-                                        + track.analysis.beats.length + " beats, "  
-                                        + track.analysis.tatums.length + " tatums");
-       
+            $("#info").text(track.analysis.sections.length + " sections, "  
+                          + track.analysis.bars.length + " bars, "  
+                          + track.analysis.beats.length + " beats, "  
+                          + track.analysis.tatums.length + " tatums");
        
             if (track.analysis.bars > 64)
             {
