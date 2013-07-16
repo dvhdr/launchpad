@@ -175,7 +175,7 @@ window.onload = init;
 
 //////////////////////////////////////////////////////////////
 // looping "engine"
-var colOffset = 1; // default is not to skip bars to fit more content in for long songs
+var colOffset = 4; // default is not to skip bars to fit more content in for long songs
 var nextLoopStart = 0;
 var lastLoop = -1;
 var beat = 3;
@@ -194,7 +194,7 @@ function playLoop()
     }
     else
     {
-  //      return;
+        return;
     }
     
     var bar = new Array();
@@ -202,8 +202,8 @@ function playLoop()
     bar.push(track.analysis.beats[lastLoop + 1]);
     bar.push(track.analysis.beats[lastLoop + 2]);
     bar.push(track.analysis.beats[lastLoop + 3]);
-
-    nextLoopStart = player.play(nextLoopStart, track.analysis.bars[lastLoop]);
+    
+    nextLoopStart = player.play(nextLoopStart, bar);
 }
 
 function stopLooping()
