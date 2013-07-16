@@ -168,7 +168,10 @@ function loadRemixData()
         // Do the remixing!
         if (track.status == 'ok') 
         {
-            $("#info").text("Remix ready! " + track.analysis.bars.length + " bars, "  + track.analysis.beats.length + " beats, "  + track.analysis.tatums.length + " tatums");
+            $("#info").text("Ready! "   + track.analysis.sections.length + " sections, "  
+                                        + track.analysis.bars.length + " bars, "  
+                                        + track.analysis.beats.length + " beats, "  
+                                        + track.analysis.tatums.length + " tatums");
        
        
             if (track.analysis.bars > 64)
