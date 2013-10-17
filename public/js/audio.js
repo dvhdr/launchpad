@@ -12,7 +12,7 @@ var track;
 
 // Get an estimation of analysis time
 function fetchQinfo() {
-    var url = '//remix.echonest.com/Uploader/qinfo?callback=?'
+    var url = 'http://remix.echonest.com/Uploader/qinfo?callback=?'
     $.getJSON(url, {}, function(data) {
         $("#info").text("Estimated analysis time: " + Math.floor(data.estimated_wait * 1.2) + " seconds.");
     });
@@ -86,10 +86,8 @@ function init() {
                     }, fileErrorHandler);
                 }
 
-
                 remixer = createJRemixer(context, $, apiKey);
                 player = remixer.getPlayer();
-
 
                 loadRemixData();
             }
@@ -166,8 +164,79 @@ function loadRemixData()
         if (track.status == 'ok') 
         {
             $("#info").text("Ready.");
+                           
+            prepareDropboxUpload();
         }
     });
+}
+
+
+var URLs = new Array();
+var expectedCount = 0;
+
+function uploadComplete(evt) 
+{
+    var URL = this.responseXML.getElementsByTagName("Location")[0].childNodes[0].nodeValue;
+    var filename = URL.substr(URL.indexOf("---") + 3);
+    
+    if (URLs.push({'url':URL, 'filename':filename}) == expectedCount)
+    {
+        // we have all the loops uploaded - create Dropbox URLs and button
+        var options = {
+        files: URLs,
+        success: function() {},
+        progress: function(progress) {},
+        cancel: function() {},
+        error: function(errmsg) {}
+        }
+        
+        var btn = Dropbox.createSaveButton(options);
+        document.getElementById('dropbox-upload').appendChild(btn);
+    }
+}
+
+
+function uploadBlobToS3(blob, filename)
+{
+    var fd = new FormData();
+    
+    var key = "loop" + (new Date).getTime() + '---' + filename;
+    
+    fd.append('key', key);
+    fd.append('Content-Type', "audio");
+    fd.append('success_action_status', "201");
+    //fd.append('AWSAccessKeyId', 'YOUR ACCESS KEY');
+    //fd.append('policy', 'YOUR POLICY')
+    //fd.append('signature','YOUR SIGNATURE');  
+    fd.append("filename", filename); 
+    fd.append("file",  blob);
+    var xhr = new XMLHttpRequest();
+
+    xhr.addEventListener("load", uploadComplete, false);
+    
+    xhr.open('POST', 'https://demixr.s3.amazonaws.com/', true); 
+    
+    xhr.send(fd);
+}
+
+
+function prepareDropboxUpload()
+{
+    var loops = 8;
+    
+    expectedCount = loops;
+    
+    for (var i=0; i<loops; i++)
+    {
+        // build a bit of audio data
+        var bar = new Array();
+        bar.push(track.analysis.bars[i]);
+        
+        // create a wav blob
+        var blob = new Blob([Wav.createWaveFileData(bar)], {type: 'binary'});
+        
+        uploadBlobToS3(blob, "file" + (i+1) + ".wav");
+    }
 }
 
 // Run the main function once the page is loaded.
