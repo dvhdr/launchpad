@@ -222,20 +222,21 @@ function uploadBlobToS3(blob, filename)
 
 function prepareDropboxUpload()
 {
-    var loops = 8;
+    var loops = 32;
     
     expectedCount = loops;
     
     for (var i=0; i<loops; i++)
     {
         // build a bit of audio data
-        var bar = new Array();
-        bar.push(track.analysis.bars[i]);
+        var loop = new Array();
+        loop.push(track.analysis.bars[0 +i*2]);
+        loop.push(track.analysis.bars[1+ i*2]);
         
         // create a wav blob
-        var blob = new Blob([Wav.createWaveFileData(bar)], {type: 'binary'});
+        var blob = new Blob([Wav.createWaveFileData(loop)], {type: 'binary'});
         
-        uploadBlobToS3(blob, "file" + (i+1) + ".wav");
+        uploadBlobToS3(blob, "loop" + (i+1) + ".wav");
     }
 }
 
